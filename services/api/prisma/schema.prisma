@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(uuid())
+  phone           String   @unique
+  name            String
+  trustedContacts String?  // JSON encoded string of TrustedContact[]
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  cases           Case[]
+
+  @@map("users")
+}
+
+model Case {
+  id          String      @id @default(uuid())
+  caseType    String      @map("case_type") // MEDICAL, DISASTER, CIVIC, SECURITY
+  status      String      @default("CREATED") // CREATED, ASSESSING, AWAITING_USER, AUTHORIZED, ACTION_EXECUTING, ACTION_COMPLETED, FOLLOW_UP, RESOLVED
+  riskLevel   String      @default("MEDIUM") @map("risk_level") // LOW, MEDIUM, HIGH, CRITICAL
+  userId      String?     @map("user_id")
+  location    String      // JSON encoded string of LocationInfo { lat, lng, address, landmark, city, zone }
+  title       String?
+  description String?
+  metadata    String?     // JSON encoded metadata
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  user        User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  events      CaseEvent[]
+  actions     Action[]
+  complaints  Complaint[]
+
+  @@map("cases")
+}
+
+model CaseEvent {
+  id        String   @id @default(uuid())
+  caseId    String   @map("case_id")
+  eventType String   @map("event_type")
+  payload   String   // JSON encoded payload
+  timestamp DateTime @default(now())
+
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@map("case_events")
+}
+
+model Action {
+  id               String           @id @default(uuid())
+  caseId           String           @map("case_id")
+  actionType       String           @map("action_type") // AMBULANCE_DISPATCH, HOSPITAL_ALERT, etc.
+  riskLevel        String           @default("MEDIUM") @map("risk_level")
+  payload          String           // JSON encoded payload
+  requiresApproval Boolean          @default(true) @map("requires_approval")
+  status           String           @default("PENDING") // PENDING, APPROVED, REJECTED, EXECUTING, COMPLETED, FAILED
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  case             Case             @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  approvals        ActionApproval[]
+  auditLogs        AuditLog[]
+
+  @@map("actions")
+}
+
+model ActionApproval {
+  id        String   @id @default(uuid())
+  actionId  String   @map("action_id")
+  userId    String?  @map("user_id")
+  status    String   // APPROVED, REJECTED
+  reason    String?
+  timestamp DateTime @default(now())
+
+  action    Action   @relation(fields: [actionId], references: [id], onDelete: Cascade)
+
+  @@map("action_approvals")
+}
+
+model Hospital {
+  id            String   @id @default(uuid())
+  name          String
+  lat           Float
+  lng           Float
+  capacity      Int      @default(50)
+  availableBeds Int      @default(15) @map("available_beds")
+  contactPhone  String   @map("contact_phone")
+  status        String   @default("AVAILABLE") // AVAILABLE, BUSY, FULL, OFFLINE
+  specialties   String   // JSON array of strings e.g. ["TRAUMA_ICU", "CARDIOLOGY", "BURN_UNIT"]
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("hospitals")
+}
+
+model Complaint {
+  id          String   @id @default(uuid())
+  caseId      String?  @map("case_id")
+  department  String
+  description String
+  status      String   @default("SUBMITTED") // SUBMITTED, ACKNOWLEDGED, IN_PROGRESS, ESCALATED, RESOLVED
+  referenceId String   @unique @map("reference_id")
+  location    String?  // JSON encoded string
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  case        Case?    @relation(fields: [caseId], references: [id], onDelete: SetNull)
+
+  @@map("complaints")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actionId  String?  @map("action_id")
+  caseId    String?  @map("case_id")
+  actor     String   // USER, AI_AGENT, FIRST_RESPONDER, HOSPITAL_ADMIN, OPS_DISPATCHER
+  action    String   // STATE_TRANSITION, ACTION_APPROVED, ACTION_REJECTED, AMBULANCE_DISPATCHED, BED_RESERVED
+  details   String   // JSON encoded details
+  timestamp DateTime @default(now())
+
+  actionRef Action?  @relation(fields: [actionId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}

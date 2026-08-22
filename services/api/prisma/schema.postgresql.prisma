@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(uuid())
+  phone           String   @unique
+  name            String
+  trustedContacts Json?    @map("trusted_contacts")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  cases           Case[]
+
+  @@map("users")
+}
+
+model Case {
+  id          String      @id @default(uuid())
+  caseType    String      @map("case_type")
+  status      String      @default("CREATED")
+  riskLevel   String      @default("MEDIUM") @map("risk_level")
+  userId      String?     @map("user_id")
+  location    Json
+  title       String?
+  description String?
+  metadata    Json?
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  user        User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  events      CaseEvent[]
+  actions     Action[]
+  complaints  Complaint[]
+
+  @@map("cases")
+}
+
+model CaseEvent {
+  id        String   @id @default(uuid())
+  caseId    String   @map("case_id")
+  eventType String   @map("event_type")
+  payload   Json
+  timestamp DateTime @default(now())
+
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@map("case_events")
+}
+
+model Action {
+  id               String           @id @default(uuid())
+  caseId           String           @map("case_id")
+  actionType       String           @map("action_type")
+  riskLevel        String           @default("MEDIUM") @map("risk_level")
+  payload          Json
+  requiresApproval Boolean          @default(true) @map("requires_approval")
+  status           String           @default("PENDING")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  case             Case             @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  approvals        ActionApproval[]
+  auditLogs        AuditLog[]
+
+  @@map("actions")
+}
+
+model ActionApproval {
+  id        String   @id @default(uuid())
+  actionId  String   @map("action_id")
+  userId    String?  @map("user_id")
+  status    String
+  reason    String?
+  timestamp DateTime @default(now())
+
+  action    Action   @relation(fields: [actionId], references: [id], onDelete: Cascade)
+
+  @@map("action_approvals")
+}
+
+model Hospital {
+  id            String   @id @default(uuid())
+  name          String
+  lat           Float
+  lng           Float
+  capacity      Int      @default(50)
+  availableBeds Int      @default(15) @map("available_beds")
+  contactPhone  String   @map("contact_phone")
+  status        String   @default("AVAILABLE")
+  specialties   Json
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("hospitals")
+}
+
+model Complaint {
+  id          String   @id @default(uuid())
+  caseId      String?  @map("case_id")
+  department  String
+  description String
+  status      String   @default("SUBMITTED")
+  referenceId String   @unique @map("reference_id")
+  location    Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  case        Case?    @relation(fields: [caseId], references: [id], onDelete: SetNull)
+
+  @@map("complaints")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actionId  String?  @map("action_id")
+  caseId    String?  @map("case_id")
+  actor     String
+  action    String
+  details   Json
+  timestamp DateTime @default(now())
+
+  actionRef Action?  @relation(fields: [actionId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
