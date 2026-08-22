@@ -1,0 +1,28 @@
+{
+  "model_type": "GradientBoostingClassifier + Regressor",
+  "features": [
+    "rainfall_mm_hr",
+    "elevation_meters",
+    "river_distance_meters",
+    "water_level_rise_rate_cm_hr",
+    "drainage_capacity_score",
+    "soil_saturation_pct",
+    "population_density_sq_km",
+    "infrastructure_vulnerability"
+  ],
+  "metrics": {
+    "accuracy": 0.9066666666666666,
+    "r2_score": 0.9348604406429332,
+    "rmse": 0.03229585259348127
+  },
+  "feature_importances": {
+    "water_level_rise_rate_cm_hr": 0.3729882688948866,
+    "river_distance_meters": 0.27743331065584115,
+    "elevation_meters": 0.13902882632392644,
+    "rainfall_mm_hr": 0.0795869509048667,
+    "drainage_capacity_score": 0.07537259383027223,
+    "soil_saturation_pct": 0.03358455666513066,
+    "infrastructure_vulnerability": 0.011362575004886778,
+    "population_density_sq_km": 0.010642917720189549
+  }
+}

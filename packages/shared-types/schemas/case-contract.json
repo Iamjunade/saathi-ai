@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CaseStateContract",
+  "type": "object",
+  "required": ["id", "user_id", "intent", "state", "risk_level"],
+  "properties": {
+    "id": { "type": "string" },
+    "user_id": { "type": "string" },
+    "intent": { "type": "string", "enum": ["medical", "disaster", "civic", "vision", "general"] },
+    "state": {
+      "type": "string",
+      "enum": [
+        "CREATED",
+        "ASSESSING",
+        "AWAITING_USER",
+        "AUTHORIZED",
+        "ACTION_EXECUTING",
+        "ACTION_COMPLETED",
+        "FOLLOW_UP",
+        "RESOLVED",
+        "REJECTED"
+      ]
+    },
+    "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+    "risk_score": { "type": "number", "minimum": 0, "maximum": 1 }
+  }
+}

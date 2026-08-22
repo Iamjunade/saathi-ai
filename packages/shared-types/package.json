@@ -1,0 +1,13 @@
+{
+  "name": "@saathi/shared-types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types, JSON schemas and API data contracts for SAATHI",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": ["saathi", "types", "schemas", "contracts"],
+  "author": "Meta Minds Team",
+  "license": "MIT"
+}

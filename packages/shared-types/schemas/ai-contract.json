@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SAATHI_AI_Contract",
+  "definitions": {
+    "UserLocation": {
+      "type": "object",
+      "properties": {
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "address": { "type": "string" },
+        "city": { "type": "string" }
+      },
+      "required": ["lat", "lng"]
+    },
+    "OrchestrateRequest": {
+      "type": "object",
+      "required": ["user_id", "input_type", "input_content"],
+      "properties": {
+        "user_id": { "type": "string" },
+        "input_type": { "type": "string", "enum": ["voice", "text", "vision"] },
+        "input_content": { "type": "string" },
+        "user_location": { "$ref": "#/definitions/UserLocation" },
+        "image_base64": { "type": "string" },
+        "audio_base64": { "type": "string" }
+      }
+    },
+    "RiskEvalRequest": {
+      "type": "object",
+      "required": ["input_text"],
+      "properties": {
+        "intent": { "type": "string", "enum": ["medical", "disaster", "civic", "vision", "general"] },
+        "input_text": { "type": "string" },
+        "ml_model_score": { "type": "number" },
+        "user_location": { "$ref": "#/definitions/UserLocation" },
+        "features": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        }
+      }
+    },
+    "RiskEvalResponse": {
+      "type": "object",
+      "required": ["intent", "risk_score", "risk_level", "requires_authorization", "recommended_action", "confidence"],
+      "properties": {
+        "intent": { "type": "string", "enum": ["medical", "disaster", "civic", "vision", "general"] },
+        "risk_score": { "type": "number" },
+        "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "requires_authorization": { "type": "boolean" },
+        "recommended_action": { "type": "string" },
+        "confidence": { "type": "number" },
+        "matched_triggers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "factors": { "type": "object" },
+        "guardrail_status": { "type": "object" }
+      }
+    },
+    "VisionExplainRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "string" },
+        "input_content": { "type": "string" },
+        "document_description_or_ocr": { "type": "string" },
+        "image_base64": { "type": "string" },
+        "language": { "type": "string" }
+      }
+    }
+  }
+}
