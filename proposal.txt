@@ -1,0 +1,170 @@
+META MINDS  •  SAATHI
+Jury Proposal  |  Page 1
+TechFusion 2026  •  Proposal derived from the team's Product & Engineering Specification
+ SAATHI
+ Human-Centered Multimodal AI Response Agent
+ ONE CONVERSATION. ANY SITUATION. SAFE, AUTHORIZED, REAL-WORLD
+ ACTION.
+1. The Problem
+When people face a real-world problem, the hardest part is often not getting an answer—it is knowing what to do
+next. A person may not know which hospital, government department, emergency service, route, form, or support
+channel is relevant. Existing chatbots mainly provide information; they do not reliably convert human intent into a
+verified action.
+SAATHI addresses this gap by creating a single human interface to complex societal infrastructure.
+2. Our Solution
+SAATHI is not another AI chatbot. It is a multimodal, agentic response platform through which users can speak
+naturally, show an image, or provide text. SAATHI understands the situation, assesses risk, selects the right
+specialist capability, asks for authorization when needed, coordinates the appropriate service, executes the next
+action, and follows up until the case is resolved.
+Human
+Understand
+Assess
+Authorize
+Act
+Verify
+Follow up
+Resolve
+3. Why SAATHI Is Different
+Human-first
+Natural conversation; no need to understand departments, apps or procedures.
+Action-oriented
+Moves from intent to a concrete, trackable next step instead of stopping at an answer.
+Safety-first
+Deterministic risk policies, approval gates and a dedicated safety layer protect consequential actions.
+Multimodal
+Voice, text and camera/vision support English, Hindi and Telugu initially.
+Follow-through
+Cases continue after the first action through status tracking, notifications and follow-up.
+ 4
+ < 3 sec
+ 0%
+ 1
+ core workflows
+ normal agent target
+ target unsafe action rate
+ unified interface
+Target users: citizens, elderly people, people with accessibility needs, students/young adults, and authorized
+family caregivers.
+
+META MINDS  •  SAATHI
+Jury Proposal  |  Page 2
+TechFusion 2026  •  Proposal derived from the team's Product & Engineering Specification
+ THE PROPOSED SYSTEM
+ Four high-impact workflows powered by one agentic platform
+01 MEDICAL COORDINATION
+Voice → risk assessment → nearby hospital discovery → user authorization → simulated contact → case tracking →
+follow-up.
+Boundary: SAATHI supports triage and coordination; it does not diagnose disease.
+02 DISASTER RESPONSE
+Voice/location → local risk estimation → affected-zone assessment → safe route/shelter discovery → personalized
+response.
+Prototype risk model can use rainfall, temperature, elevation, drainage, historical incidents, roads and population.
+03 CIVIC ASSISTANCE
+Voice → transcription/language detection → intent & entity extraction → department classification → complaint
+draft → structured case → tracking.
+Turns an everyday complaint into an actionable, traceable case.
+04 ACCESSIBILITY & VISION
+Camera → OCR/vision → scene or document understanding → simplified explanation → spoken response.
+Designed to reduce information barriers through multimodal and multilingual interaction.
+5. Technology & Architecture
+Experience: React Native + Expo mobile app, Next.js + TypeScript web dashboard. Backend: NestJS API with
+Python/FastAPI AI/ML services. AI: reasoning model + structured tool workflows, specialist agents and
+deterministic safety policies. Voice: real-time speech-to-speech with WebRTC. Data: PostgreSQL + pgvector,
+Redis; event-driven workflows. ML: PyTorch, scikit-learn/XGBoost, evaluation and safety benchmarks.
+Voice / Text /
+Camera
+Multimodal
+Gateway
+Intent + Risk
+Agent
+Orchestrator
+Services /
+Tools
+Approval
+Gate
+Action +
+Case
+Follow-up
+6. Trust, Safety & Human Control
+• Sensitive actions require explicit authorization; every tool declares risk, permissions, data shared and audit
+ requirements.
+• Emergency handling uses a governed safety policy rather than allowing an LLM to make unrestricted critical decisions.
+ 
+• Structured AI outputs are validated server-side; critical actions are never triggered by free-form model text.
+ 
+• Privacy follows data minimization, purpose limitation, consent, retention controls and auditability.
+ 
+• The system never claims an action succeeded unless a verified tool result confirms it; simulated integrations are
+ clearly labeled.
+
+META MINDS  •  SAATHI
+Jury Proposal  |  Page 3
+TechFusion 2026  •  Proposal derived from the team's Product & Engineering Specification
+ JURY PROPOSAL
+ What we will demonstrate, why it matters, and how it scales
+7. The Jury Demo
+Scene 1
+A user describes an urgent health concern. SAATHI assesses risk, identifies a suitable hospital,
+requests authorization, creates the case and shows follow-up.
+Scene 2
+A user reports flood concern. SAATHI uses location and the disaster-risk workflow to show risk
+and a safer route/shelter option.
+Scene 3
+A civic complaint is spoken naturally. SAATHI classifies it, structures the case and
+demonstrates tracking.
+Scene 4
+A user points the camera at a document. SAATHI understands it and explains the content
+through voice.
+8. Innovation & Impact
+• One interface, many domains: medical, disaster, civic and accessibility use cases are unified by the same response
+ loop.
+• From conversation to outcome: SAATHI treats every real-world issue as a Case with status, actions, authorization and
+ resolution state.
+• Trust as infrastructure: consent, safety policies, audit trails and verifiable tool outcomes are part of the core
+ product—not add-ons.
+• Designed for inclusion: voice-first interaction and multilingual multimodal support reduce dependence on technical
+ literacy.
+• Scalable foundation: future agents can extend the platform to education, employment, public services, financial safety
+ and family assistance.
+9. MVP & Roadmap
+Phase 1 —
+TechFusion 2026
+Four polished workflows; voice-first experience; agent routing; risk engine; tool calls;
+authorization; case management; follow-up; audit trail. Simulated external integrations are
+explicitly labeled.
+Phase 2 — Pilot
+Pilot with one hospital, one NGO, one municipal body and one emergency workflow; validate
+safety, usability and outcome metrics.
+Phase 3 — Regional
+Expand service integrations, multilingual capability, operational dashboards and verified provider
+networks.
+Phase 4–5 — Scale
+Government/health integrations followed by broader regional and nation-scale deployment,
+subject to legal, privacy, safety and provider-readiness gates.
+10. Success Measures
+User
+Task completion •
+time-to-action • satisfaction
+AI
+Intent/risk accuracy •
+hallucination • tool selection
+Safety
+Unsafe action • unauthorized
+sharing • escalation errors
+Societal
+Resolved cases • coordination
+time • people assisted
+“We are not building another AI chatbot. We are building an AI layer between
+ humans and the services they need.”
+Team Meta Minds
+Ownership
+Mohd Junaid Pasha — Team Leader
+Product direction, architecture, orchestration, demo, integration
+
+META MINDS  •  SAATHI
+Jury Proposal  |  Page 4
+TechFusion 2026  •  Proposal derived from the team's Product & Engineering Specification
+Muhammad Saif Patel — AI/ML
+ML models, evaluation, agent intelligence, risk engine
+Mustyala Shiva Sai Tej — Full-Stack / Systems
+Backend, database, workflows, APIs, deployment
