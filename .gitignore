@@ -14,3 +14,6 @@ yarn-error.log*
 .prisma
 prisma/*.db
 prisma/*.db-journal
+**/*.db
+**/*.db-journal
+services/api/prisma/services/
